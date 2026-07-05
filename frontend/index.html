@@ -133,7 +133,6 @@
                 <div class="flex items-center gap-3">
                     <!-- Toggle Switch for Diagram / Code -->
                     <div class="flex bg-slate-900 border border-slate-700 rounded-md p-1">
-                        <div class="flex-1 p-4 relative overflow-auto h-1/2 md:h-full bg-slate-950">
                         <button id="view-diagram-btn" onclick="toggleView('diagram')" class="px-3 py-1 text-xs rounded bg-slate-700 text-white transition-colors">Visual</button>
                         <button id="view-code-btn" onclick="toggleView('code')" class="px-3 py-1 text-xs rounded text-slate-400 hover:text-slate-200 transition-colors">Code</button>
                     </div>
@@ -173,14 +172,13 @@
 
                 <!-- Raw Code Editor Container -->
                 <div id="code-container" class="hidden w-full h-full">
-                    <textarea 
+                    <textarea
                         id="raw-code-output" 
                         class="w-full h-full bg-slate-900/90 border border-slate-700 rounded-lg p-6 text-sm text-sky-300 font-mono resize-none focus:outline-none focus:border-sky-500 leading-relaxed shadow-lg"
                         spellcheck="false"
                         oninput="debounceRender()"
                     ></textarea>
                 </div>
-
             </div>
         </section>
     </main>
