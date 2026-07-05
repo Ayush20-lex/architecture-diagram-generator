@@ -85,14 +85,11 @@
     </header>
 
     <!-- Main Content Split -->
-    <main class="flex-1 flex overflow-hidden">
-        <div class="flex flex-col md:flex-row h-[calc(100vh-4rem)] w-full overflow-hidden">
-        
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
         <!-- Left Panel: Input -->
-        <section class="w-[400px] border-r border-slate-800 flex flex-col bg-slate-950 shrink-0 z-10 shadow-[10px_0_15px_-3px_rgba(0,0,0,0.5)]">
+        <section class="w-full md:w-[400px] h-1/2 md:h-full border-b md:border-b-0 md:border-r border-slate-800 flex flex-col bg-slate-950 shrink-0 z-10 shadow-lg md:shadow-[10px_0_15px_-3px_rgba(0,0,0,0.5)]">
             
             <div class="p-4 border-b border-slate-800 flex items-center gap-2 text-xs text-sky-400 tracking-widest uppercase">
-                <div class="w-full md:w-96 flex-shrink-0 border-b md:border-b-0 md:border-r border-slate-800 p-4 flex flex-col justify-between overflow-y-auto h-1/2 md:h-full">
         <!-- Your input description text area and generate button go here -->
                 <i class="ph ph-terminal-window text-base"></i>
                 <span>Input Description</span>
@@ -127,7 +124,7 @@
         </section>
 
         <!-- Right Panel: Output Workspace -->
-        <section class="flex-1 relative bg-blueprint flex flex-col">
+        <section class="flex-1 h-1/2 md:h-full relative bg-blueprint flex flex-col">
             
             <!-- Output Toolbar -->
             <div class="h-12 border-b border-slate-800/50 flex items-center justify-between px-4 glass z-10">
