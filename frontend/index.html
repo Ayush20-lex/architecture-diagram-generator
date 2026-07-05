@@ -97,7 +97,7 @@
 
             <!-- Text Area -->
             <div class="flex-1 p-4 flex flex-col gap-4">
-                <textarea>
+                <textarea
                     id="description-input" 
                     class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-4 text-sm text-slate-200 resize-none focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 transition-all placeholder:text-slate-600 leading-relaxed"
                     placeholder="Describe your architecture here...&#10;&#10;Example:&#10;A user uploads a file to an S3 bucket, which triggers a Lambda function. The Lambda function processes the file and writes metadata to DynamoDB, then sends a notification via SNS to an email subscriber."
