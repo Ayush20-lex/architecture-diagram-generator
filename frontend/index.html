@@ -183,8 +183,9 @@
         let currentMermaidCode = "";
         let currentView = 'diagram';
         let renderTimeout;
-
-        const API_URL = "http://localhost:8000/generate";
+        const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+            ? "http://localhost:8000/generate" 
+            : "https://diagram-backend-z0gm.onrender.com/generate";
 
         const presets = {
             microservices: "A client application communicates with an API Gateway. The API Gateway routes requests to three separate microservices: User Service, Product Service, and Order Service. Each microservice has its own dedicated database (User DB, Product DB, Order DB). The microservices also publish events to a Kafka Event Bus for asynchronous processing.",
