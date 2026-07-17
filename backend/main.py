@@ -18,8 +18,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from google import genai
-from google.genai import types
+import groq
 
 # --------------------------------------------------------------------------
 # Config
@@ -44,16 +43,16 @@ def load_local_env() -> None:
 
 load_local_env()
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-MODEL_NAME = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+MODEL_NAME = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
-if not GEMINI_API_KEY:
+if not GROQ_API_KEY:
     logger.warning(
-        "GEMINI_API_KEY is not set. Set it as an environment variable "
-        "before making requests, e.g. PowerShell: `$env:GEMINI_API_KEY='your-key'`"
+        "GROQ_API_KEY is not set. Set it as an environment variable "
+        "before making requests, e.g. PowerShell: `$env:GROQ_API_KEY='your-key'`"
     )
 
-client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
+client = groq.Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 SYSTEM_PROMPT = """You are an expert software architect and Mermaid.js diagram generator.
 
@@ -70,8 +69,7 @@ Rules you MUST follow:
    labels in square brackets or parentheses as appropriate for the diagram type.
 4. Group related nodes using `subgraph` blocks where it improves clarity (e.g. "Frontend",
    "Backend", "Data Layer").
-5. Use directional arrows (-->) to show data/request flow, and label important edges
-   (e.g. `A -->|HTTPS| B`) where it adds clarity.
+5. Use directional arrows (-->) to show data/request flow. To label an edge, use the format `A -- "Label Text" --> B`. DO NOT use `|>` or other invalid arrow types.
 6. Keep the diagram readable: avoid overly dense graphs, avoid special characters that break
    Mermaid parsing (no unescaped quotes or parentheses inside labels).
 7. The output must be syntactically valid Mermaid.js that renders with zero errors.
@@ -117,7 +115,7 @@ def clean_mermaid_output(raw_text: str) -> str:
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "model": MODEL_NAME, "api_key_configured": bool(GEMINI_API_KEY)}
+    return {"status": "ok", "model": MODEL_NAME, "api_key_configured": bool(GROQ_API_KEY)}
 
 
 @app.post("/generate", response_model=DiagramResponse)
@@ -125,19 +123,20 @@ def generate_diagram(payload: DiagramRequest):
     if client is None:
         raise HTTPException(
             status_code=500,
-            detail="Server is missing GEMINI_API_KEY. Set it as an environment variable and restart the server.",
+            detail="Server is missing GROQ_API_KEY. Set it as an environment variable and restart the server.",
         )
 
     try:
-        response = client.models.generate_content(
+        response = client.chat.completions.create(
             model=MODEL_NAME,
-            contents=f"Architecture description:\n\n{payload.description}",
-            config=types.GenerateContentConfig(
-                max_output_tokens=2000,
-                system_instruction=SYSTEM_PROMPT,
-            ),
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"Architecture description:\n\n{payload.description}"}
+            ],
+            max_tokens=2000,
+            temperature=0.1
         )
-        raw_text = response.text or ""
+        raw_text = response.choices[0].message.content or ""
 
         mermaid_code = clean_mermaid_output(raw_text)
 

@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADG | Architecture Diagram Generator</title>
+    <title>Architecture Diagram Generator</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <!-- Mermaid.js for rendering diagrams -->
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -14,12 +20,13 @@
             theme: 'dark',
             themeVariables: {
                 primaryColor: '#1e293b',
-                primaryTextColor: '#e2e8f0',
-                primaryBorderColor: '#38bdf8',
-                lineColor: '#38bdf8',
-                secondaryColor: '#0f172a',
-                tertiaryColor: '#0f172a'
-            }
+                primaryTextColor: '#f8fafc',
+                primaryBorderColor: '#3b82f6',
+                lineColor: '#64748b',
+                secondaryColor: '#334155',
+                tertiaryColor: '#1e293b'
+            },
+            fontFamily: 'Inter, sans-serif'
         });
         window.mermaid = mermaid;
     </script>
@@ -27,13 +34,10 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        /* Custom Blueprint Grid Background */
-        .bg-blueprint {
-            background-color: #0b1120;
-            background-image: 
-                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #f8fafc; /* slate-50 */
         }
         
         /* Custom scrollbar */
@@ -42,139 +46,131 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f172a; 
+            background: transparent; 
         }
         ::-webkit-scrollbar-thumb {
-            background: #334155; 
+            background: #334155; /* slate-700 */
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569; 
-        }
-
-        /* Glassmorphism utility */
-        .glass {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: #475569; /* slate-600 */
         }
         
-        /* Loading spinner animation */
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 1; text-shadow: 0 0 10px #38bdf8; }
-            50% { opacity: 0.5; text-shadow: none; }
-        }
-        .animate-pulse-glow {
-            animation: pulse-glow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        /* Smooth transitions */
+        .transition-all-custom {
+            transition: all 0.2s ease-in-out;
         }
     </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 h-screen flex flex-col font-mono overflow-hidden">
-
+<body class="h-screen flex flex-col overflow-hidden">
     <!-- Top Navigation Bar -->
-    <header class="h-14 border-b border-slate-800 flex items-center justify-between px-6 shrink-0 z-10 glass">
-        <div class="flex items-center gap-4">
-            <div class="px-2 py-1 border border-sky-400 text-sky-400 text-xs font-bold rounded">ADG</div>
-            <h1 class="text-sm font-semibold text-slate-100 tracking-wide">Architecture Diagram Generator</h1>
+    <header class="h-14 flex items-center justify-between px-6 shrink-0 border-b border-slate-800 bg-slate-900/50">
+        <div class="flex items-center gap-3">
+            <i class="ph ph-tree-structure text-blue-500 text-xl"></i>
+            <h1 class="text-sm font-medium text-slate-200">Architecture Diagram Generator</h1>
         </div>
-        <div class="flex items-center gap-2 text-xs bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-700">
-            <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-            <span id="status-text" class="text-slate-400">Backend Ready • gemini-1.5-flash</span>
+        <div class="flex items-center gap-2 text-xs text-slate-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span id="status-text">Backend Ready</span>
         </div>
     </header>
 
     <!-- Main Content Split -->
-    <main class="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
+    <main class="flex-1 flex flex-col md:flex-row h-[calc(100vh-3.5rem)]">
         <!-- Left Panel: Input -->
-        <section class="w-full md:w-[400px] flex-none md:h-full border-b md:border-b-0 md:border-r border-slate-800 flex flex-col bg-slate-950 z-10 shadow-lg md:shadow-[10px_0_15px_-3px_rgba(0,0,0,0.5)]">
-            
-            <div class="p-4 border-b border-slate-800 flex items-center gap-2 text-xs text-sky-400 tracking-widest uppercase">
-        <!-- Your input description text area and generate button go here -->
-                <i class="ph ph-terminal-window text-base"></i>
-                <span>Input Description</span>
+        <section class="w-full md:w-[450px] flex-none flex flex-col border-r border-slate-800 bg-slate-900">
+            <div class="p-5 pb-3 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-sm font-medium text-slate-300">
+                    <i class="ph ph-text-align-left text-slate-400"></i>
+                    <span>Description</span>
+                </div>
             </div>
 
             <!-- Text Area -->
-            <div class="flex-1 p-4 flex flex-col gap-4">
+            <div class="flex-1 px-5 flex flex-col gap-4 overflow-y-auto">
                <textarea
                     id="description-input"
-                    class="flex-1 min-h-[150px] md:min-h-0 w-full bg-slate-900 border border-slate-700 text-slate-300 p-4 rounded resize-none focus:outline-none focus:border-sky-500 font-mono text-sm"
-                    placeholder="Describe your architecture here..."
+                    class="flex-1 min-h-[200px] w-full bg-slate-800 border border-slate-700 text-slate-200 p-4 rounded-lg resize-none focus:outline-none focus:border-blue-500 transition-all-custom font-mono text-sm leading-relaxed placeholder:text-slate-500"
+                    placeholder="Enter your architecture description here...&#10;&#10;For example: A React frontend sends requests to a Node API, which reads from a PostgreSQL database."
                 ></textarea>
                 
                 <!-- Presets -->
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="loadPreset('microservices')" class="px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-sky-500 hover:text-sky-400 text-xs rounded-md transition-colors">Microservices + API Gateway</button>
-                    <button onclick="loadPreset('serverless')" class="px-3 py-1.5 bg-slate-900 border border-slate-700 hover:border-sky-500 hover:text-sky-400 text-xs rounded-md transition-colors">Serverless Pipeline</button>
+                <div class="flex flex-col gap-2 pb-2">
+                    <span class="text-xs text-slate-500 font-medium">Examples</span>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="loadPreset('microservices')" class="px-3 py-1.5 bg-slate-800 border border-slate-700 hover:border-slate-500 hover:bg-slate-700 text-xs text-slate-300 rounded transition-all-custom">
+                            Microservices
+                        </button>
+                        <button onclick="loadPreset('serverless')" class="px-3 py-1.5 bg-slate-800 border border-slate-700 hover:border-slate-500 hover:bg-slate-700 text-xs text-slate-300 rounded transition-all-custom">
+                            Serverless
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Generate Button -->
-            <div class="p-4 border-t border-slate-800 bg-slate-950/50">
+            <div class="p-5 border-t border-slate-800 bg-slate-900">
                 <button 
                     id="generate-btn"
                     onclick="generateDiagram()"
-                    class="w-full bg-sky-400 hover:bg-sky-300 text-slate-950 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.5)]"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-all-custom focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
                 >
-                    <i class="ph ph-magic-wand text-lg"></i>
-                    <span>GENERATE DIAGRAM</span>
+                    <i class="ph ph-play text-lg"></i>
+                    <span>Generate Diagram</span>
                 </button>
             </div>
         </section>
 
         <!-- Right Panel: Output Workspace -->
-        <section class="w-full min-h-[500px] md:min-h-0 md:h-full flex-1 relative bg-blueprint flex flex-col">
-            
+        <section class="flex-1 flex flex-col overflow-hidden bg-slate-950 relative">
             <!-- Output Toolbar -->
-            <div class="h-12 border-b border-slate-800/50 flex items-center justify-between px-4 glass z-10">
-                <div class="text-xs text-slate-500 tracking-widest uppercase">Schematic Output</div>
-                
-                <div class="flex items-center gap-3">
-                    <!-- Toggle Switch for Diagram / Code -->
-                    <div class="flex bg-slate-900 border border-slate-700 rounded-md p-1">
-                        <button id="view-diagram-btn" onclick="toggleView('diagram')" class="px-3 py-1 text-xs rounded bg-slate-700 text-white transition-colors">Visual</button>
-                        <button id="view-code-btn" onclick="toggleView('code')" class="px-3 py-1 text-xs rounded text-slate-400 hover:text-slate-200 transition-colors">Code</button>
+            <div class="h-12 border-b border-slate-800 flex items-center justify-between px-4 bg-slate-900/50">
+                <div class="flex items-center gap-2">
+                    <!-- Toggle Switch -->
+                    <div class="flex bg-slate-800 rounded p-1">
+                        <button id="view-diagram-btn" onclick="toggleView('diagram')" class="px-3 py-1 text-sm font-medium rounded bg-slate-700 text-slate-100 transition-all-custom">Preview</button>
+                        <button id="view-code-btn" onclick="toggleView('code')" class="px-3 py-1 text-sm font-medium rounded text-slate-400 hover:text-slate-200 transition-all-custom">Code</button>
                     </div>
-
-                    <div class="h-4 w-px bg-slate-700"></div>
-
-                    <!-- Action Buttons -->
-                    <button onclick="copyCode()" class="flex items-center gap-1 px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 hover:border-slate-500 rounded-md transition-colors">
-                        <i class="ph ph-copy"></i> Copy Code
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button onclick="copyCode()" class="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-300 bg-slate-800 hover:bg-slate-700 rounded transition-all-custom">
+                        <i class="ph ph-copy"></i>
+                        <span>Copy</span>
                     </button>
-                    <button onclick="exportSVG()" class="flex items-center gap-1 px-3 py-1.5 text-xs bg-slate-900 border border-slate-700 hover:border-slate-500 rounded-md transition-colors">
-                        <i class="ph ph-download-simple"></i> Export SVG
+                    <button onclick="exportSVG()" class="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-300 bg-slate-800 hover:bg-slate-700 rounded transition-all-custom">
+                        <i class="ph ph-download-simple"></i>
+                        <span>Export SVG</span>
                     </button>
                 </div>
             </div>
 
             <!-- Workspace Area -->
-            <div class="flex-1 relative overflow-auto p-8 flex items-center justify-center">
+            <div class="flex-1 relative overflow-auto p-6 flex items-center justify-center">
                 
                 <!-- Initial Empty State -->
-                <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-600 pointer-events-none">
-                    <i class="ph ph-cube-transparent text-6xl mb-4 opacity-50"></i>
-                    <p class="text-sm uppercase tracking-widest">Awaiting Input Data</p>
+                <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500">
+                    <i class="ph ph-image text-4xl mb-3 text-slate-700"></i>
+                    <p class="text-sm">Your diagram will appear here</p>
                 </div>
 
                 <!-- Loading State -->
-                <div id="loading-state" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-950/50 backdrop-blur-sm z-20">
-                    <i class="ph ph-cpu text-6xl text-sky-400 mb-4 animate-pulse"></i>
-                    <p class="text-sm uppercase tracking-widest text-sky-400 animate-pulse-glow">Synthesizing Architecture...</p>
+                <div id="loading-state" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-950 z-20">
+                    <i class="ph ph-circle-notch text-4xl text-blue-500 animate-spin mb-4"></i>
+                    <p class="text-sm text-slate-400">Generating diagram...</p>
                 </div>
 
                 <!-- Visual Diagram Container -->
                 <div id="diagram-container" class="hidden w-full h-full flex items-center justify-center">
-                    <!-- Mermaid renders SVG inside here -->
-                    <div id="mermaid-output" class="max-w-full max-h-full"></div>
+                    <div id="mermaid-output" class="w-full h-full flex items-center justify-center"></div>
                 </div>
 
                 <!-- Raw Code Editor Container -->
                 <div id="code-container" class="hidden w-full h-full">
                     <textarea
                         id="raw-code-output" 
-                        class="w-full h-full bg-slate-900/90 border border-slate-700 rounded-lg p-6 text-sm text-sky-300 font-mono resize-none focus:outline-none focus:border-sky-500 leading-relaxed shadow-lg"
+                        class="w-full h-full bg-slate-900 border border-slate-700 rounded p-5 text-sm text-slate-300 font-mono resize-none focus:outline-none focus:border-blue-500"
                         spellcheck="false"
                         oninput="debounceRender()"
                     ></textarea>
@@ -184,14 +180,11 @@
     </main>
 
     <script>
-        // Store the raw code globally
         let currentMermaidCode = "";
-        let currentView = 'diagram'; // 'diagram' or 'code'
+        let currentView = 'diagram';
         let renderTimeout;
 
-        // Constants
-        // IMPORTANT: Ensure this matches the port your FastAPI server is running on (usually 8000)
-        const API_URL = "https://diagram-backend-z0gm.onrender.com/generate";
+        const API_URL = "http://localhost:8000/generate";
 
         const presets = {
             microservices: "A client application communicates with an API Gateway. The API Gateway routes requests to three separate microservices: User Service, Product Service, and Order Service. Each microservice has its own dedicated database (User DB, Product DB, Order DB). The microservices also publish events to a Kafka Event Bus for asynchronous processing.",
@@ -199,7 +192,8 @@
         };
 
         function loadPreset(key) {
-            document.getElementById('description-input').value = presets[key];
+            const input = document.getElementById('description-input');
+            input.value = presets[key];
         }
 
         function toggleView(view) {
@@ -210,29 +204,28 @@
             const codeContainer = document.getElementById('code-container');
 
             if (view === 'diagram') {
-                diagramBtn.className = "px-3 py-1 text-xs rounded bg-slate-700 text-white transition-colors";
-                codeBtn.className = "px-3 py-1 text-xs rounded text-slate-400 hover:text-slate-200 transition-colors";
+                diagramBtn.className = "px-3 py-1 text-sm font-medium rounded bg-slate-700 text-slate-100 transition-all-custom";
+                codeBtn.className = "px-3 py-1 text-sm font-medium rounded text-slate-400 hover:text-slate-200 transition-all-custom";
+                
                 codeContainer.classList.add('hidden');
                 diagramContainer.classList.remove('hidden');
-                // Re-render when switching back to diagram in case code was edited
+                
                 renderDiagram(document.getElementById('raw-code-output').value);
             } else {
-                codeBtn.className = "px-3 py-1 text-xs rounded bg-slate-700 text-white transition-colors";
-                diagramBtn.className = "px-3 py-1 text-xs rounded text-slate-400 hover:text-slate-200 transition-colors";
+                codeBtn.className = "px-3 py-1 text-sm font-medium rounded bg-slate-700 text-slate-100 transition-all-custom";
+                diagramBtn.className = "px-3 py-1 text-sm font-medium rounded text-slate-400 hover:text-slate-200 transition-all-custom";
+                
                 diagramContainer.classList.add('hidden');
                 codeContainer.classList.remove('hidden');
-                // Ensure text area has latest code
+                
                 document.getElementById('raw-code-output').value = currentMermaidCode;
             }
         }
 
-        // Debounce function so we don't re-render on every single keystroke in the editor
         function debounceRender() {
             clearTimeout(renderTimeout);
             renderTimeout = setTimeout(() => {
                 currentMermaidCode = document.getElementById('raw-code-output').value;
-                // We don't render visually here because they are looking at code, 
-                // but we save the state so it renders when they switch back.
             }, 500);
         }
 
@@ -240,45 +233,42 @@
             const outputDiv = document.getElementById('mermaid-output');
             
             try {
-                // Clear previous
                 outputDiv.innerHTML = '';
-                
-                // Use Mermaid API to render
-                // We generate a unique ID for the SVG to prevent DOM conflicts
                 const id = 'diagram-' + Date.now();
                 const { svg } = await window.mermaid.render(id, code);
                 
                 outputDiv.innerHTML = svg;
                 
-                // Make the SVG responsive
                 const svgElement = outputDiv.querySelector('svg');
                 if(svgElement) {
-                    svgElement.style.maxWidth = '100%';
-                    svgElement.style.height = 'auto';
+                    svgElement.style.width = '100%';
+                    svgElement.style.height = '100%';
+                    svgElement.style.maxHeight = '100%';
                 }
 
             } catch (error) {
                 console.error("Mermaid parsing error:", error);
-                outputDiv.innerHTML = `<div class="text-rose-400 bg-rose-950/50 p-4 rounded border border-rose-900 font-mono text-xs whitespace-pre-wrap">${error.message || 'Syntax error in generated code.'}</div>`;
+                outputDiv.innerHTML = `<div class="text-red-400 bg-red-950/30 p-4 rounded border border-red-900/50 font-mono text-sm whitespace-pre-wrap">${error.message || 'Syntax error in generated code.'}</div>`;
             }
         }
 
         async function generateDiagram() {
             const input = document.getElementById('description-input').value.trim();
-            if (!input) {
-                alert("Please enter an architecture description.");
-                return;
-            }
+            if (!input) return;
 
             // UI Updates
             document.getElementById('empty-state').classList.add('hidden');
             document.getElementById('diagram-container').classList.add('hidden');
             document.getElementById('code-container').classList.add('hidden');
-            document.getElementById('loading-state').classList.remove('hidden');
+            
+            const loader = document.getElementById('loading-state');
+            loader.classList.remove('hidden');
             
             const btn = document.getElementById('generate-btn');
+            const originalBtnHtml = btn.innerHTML;
             btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            btn.innerHTML = '<i class="ph ph-circle-notch animate-spin text-lg"></i><span>Generating...</span>';
 
             try {
                 const response = await fetch(API_URL, {
@@ -297,7 +287,8 @@
                     currentMermaidCode = data.mermaid_code;
                     document.getElementById('raw-code-output').value = currentMermaidCode;
                     
-                    // Render based on current view
+                    loader.classList.add('hidden');
+
                     if (currentView === 'diagram') {
                         await renderDiagram(currentMermaidCode);
                         document.getElementById('diagram-container').classList.remove('hidden');
@@ -310,26 +301,26 @@
 
             } catch (error) {
                 console.error("Error generating diagram:", error);
-                alert("Failed to generate diagram. Is your backend running? Error: " + error.message);
-                document.getElementById('empty-state').classList.remove('hidden');
+                loader.classList.add('hidden');
+                
+                const emptyState = document.getElementById('empty-state');
+                emptyState.classList.remove('hidden');
+                emptyState.innerHTML = `<div class="text-red-400 text-center"><i class="ph ph-warning-circle text-3xl mb-2"></i><p class="font-medium">Connection Error</p><p class="text-xs mt-1 text-red-300/80">${error.message}</p></div>`;
             } finally {
-                // Restore UI
-                document.getElementById('loading-state').classList.add('hidden');
                 btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                btn.innerHTML = originalBtnHtml;
             }
         }
 
-        // Utility Functions
         async function copyCode() {
             if (!currentMermaidCode) return;
             try {
                 await navigator.clipboard.writeText(currentMermaidCode);
-                // Simple visual feedback
                 const btn = event.currentTarget;
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="ph ph-check text-emerald-400"></i> Copied!';
-                setTimeout(() => btn.innerHTML = originalHTML, 2000);
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="ph ph-check text-green-500"></i><span class="text-green-500">Copied</span>';
+                setTimeout(() => btn.innerHTML = originalHtml, 2000);
             } catch (err) {
                 console.error('Failed to copy: ', err);
             }
@@ -337,16 +328,11 @@
 
         function exportSVG() {
             const svgElement = document.querySelector('#mermaid-output svg');
-            if (!svgElement) {
-                alert("No diagram rendered yet to export.");
-                return;
-            }
+            if (!svgElement) return;
 
-            // Get SVG source
             const serializer = new XMLSerializer();
             let source = serializer.serializeToString(svgElement);
 
-            // Add name spaces
             if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
                 source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
             }
@@ -354,13 +340,9 @@
                 source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
             }
 
-            // Add xml declaration
             source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-
-            // Convert svg source to URI data scheme
             const url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
 
-            // Create download link
             const downloadLink = document.createElement("a");
             downloadLink.href = url;
             downloadLink.download = "architecture-diagram.svg";
