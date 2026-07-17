@@ -146,8 +146,11 @@ def generate_diagram(payload: DiagramRequest):
         return DiagramResponse(mermaid_code=mermaid_code)
 
     except Exception as e:
-        logger.exception("Unexpected error generating diagram")
-        raise HTTPException(status_code=502, detail=f"LLM API error: {str(e)}")
+        logger.exception("Error calling Groq API")
+        raise HTTPException(
+            status_code=500,
+            detail=f"LLM API error ({type(e).__name__}): {e}"
+        )
 
 
 if __name__ == "__main__":
